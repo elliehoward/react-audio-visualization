@@ -80,3 +80,26 @@ Navigate to audio-visuals/src/App.js
 
  export default App;
  ```
+Now inside the main div we will insert an audio tag, with whatever song you'd like. I'm going to use sublime!
+
+now the App Component should look like this:
+
+```
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+      <audio
+          ref="audio"
+          autoPlay={true}
+          controls={true}
+          src="https://p.scdn.co/mp3-preview/e4a8f30ca62b4d2a129cc4df76de66f43e12fa3f?cid=null"
+          >
+          </audio>
+      </div>
+    );
+  }
+}
+```
+
+As you can see we have set a few attributes on the audio tag, including the ref attribute. This is so we can reference the tag in a method later on.
