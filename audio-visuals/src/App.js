@@ -3,19 +3,24 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
-}
+    render() {
+        return (
+            <div className="App">
+                <h2>Sublime - 40oz to Freedom</h2>
+                <div id="mp3_player">
+                    <div id="audio_box">
+                        <audio
+                            ref="audio"
+                            autoPlay={true}
+                            controls={true}
+                            src={"https://p.scdn.co/mp3-preview/e4a8f30ca62b4d2a129cc4df76de66f43e12fa3f?cid=null"}
+                            >
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    }
 
-export default App;
+    export default App;
