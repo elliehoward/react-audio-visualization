@@ -17,8 +17,20 @@ create-react-app audio-visuals
 ```
 
 This may take a moment...
+After it's done you can go ahead and change directories into the newly created app. Type the following into your terminal.
+```
+cd audio-visuals
+```
 
-Then open up the directory in your favorite text editor. \(I use Atom\)
+Then open up the directory in your favorite text editor. \(I use Atom\) You can open it up from the terminal by typing
+```
+atom .
+```
+If you see an error that says atom is not a command then go to atom and look at the top menu bar. Click the drop down that say Atom and look for Install shell commands. Click that and you should now be able to use the atom command in your terminal.
+![Atom menu example](http://i68.tinypic.com/avhjz7.png)
+
+
+
 The file structure will look like this:
 ```
 audio-visuals/
@@ -102,4 +114,6 @@ class App extends Component {
 }
 ```
 
-As you can see we have set a few attributes on the audio tag, including the ref attribute. This is so we can reference the tag in a method later on.
+As you can see we have set a few attributes on the audio tag, including the ref attribute. This is so we can reference the tag in a method later on. [Learn more about the red attribute here!](https://facebook.github.io/react/docs/refs-and-the-dom.html)
+
+You can now run npm start in your terminal and
