@@ -16,6 +16,12 @@ class App extends Component {
                             src={"https://p.scdn.co/mp3-preview/e4a8f30ca62b4d2a129cc4df76de66f43e12fa3f?cid=null"}
                             >
                             </audio>
+                            <canvas
+                                ref="analyzerCanvas"
+                                id="analyzer"
+                                >
+
+                                </canvas>
                         </div>
                     </div>
                 </div>
