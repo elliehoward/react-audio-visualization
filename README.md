@@ -26,13 +26,16 @@ Then open up the directory in your favorite text editor. \(I use Atom\) You can 
 ```
 atom .
 ```
-If you see an error that says atom is not a command then go to atom and look at the top menu bar. Click the drop down that say Atom and look for Install shell commands. Click that and you should now be able to use the atom command in your terminal.
+If you see an error that says atom is not a command then go to atom and look at the top menu bar. Click the drop down that says Atom and look for Install shell commands. Click that and you should now be able to use the atom command in your terminal.
+
+
 ![Atom menu example](http://i68.tinypic.com/avhjz7.png)
 
 
 
 The file structure will look like this:
-```
+![File structure example](http://i64.tinypic.com/keao0i.png)
+<!-- ```
 audio-visuals/
   README.md
   node_modules/
@@ -48,7 +51,7 @@ audio-visuals/
     index.css
     index.js
     logo.svg
-```
+``` -->
 Navigate to audio-visuals/src/App.js
  you should see this in the file:
 
