@@ -117,6 +117,39 @@ class App extends Component {
 }
 ```
 
-As you can see we have set a few attributes on the audio tag, including the ref attribute. This is so we can reference the tag in a method later on. [Learn more about the red attribute here!](https://facebook.github.io/react/docs/refs-and-the-dom.html)
+As you can see we have set a few attributes on the audio tag, including the ref attribute. This is so we can reference the tag in a method we will write on our component later on. [Learn more about the red attribute here!](https://facebook.github.io/react/docs/refs-and-the-dom.html)
 
-You can now run npm start in your terminal and
+You can now run npm start in your terminal and see the audio tag. Mine looks like this:  
+
+
+![First website test](http://i67.tinypic.com/11t5sv8.png)  
+
+Go back to atom or your text editor and add a canvas tag underneath the audio tag. Add a ref attribute of "analyzerCanvas" and an id of "analyzer". I've also added a couple divs with specific Ids so we can reference them later. Your app component should look like this now:
+
+```
+class App extends Component {
+    render() {
+        return (
+            <div className="App">
+                <h2>Sublime - 40oz to Freedom</h2>
+                <div id="mp3_player">
+                    <div id="audio_box">
+                        <audio
+                            ref="audio"
+                            autoPlay={true}
+                            controls={true}
+                            src={"https://p.scdn.co/mp3-preview/e4a8f30ca62b4d2a129cc4df76de66f43e12fa3f?cid=null"}
+                            >
+                            </audio>
+                            <canvas
+                                ref="analyzerCanvas"
+                                id="analyzer"
+                                >
+                                </canvas>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    }
+```
