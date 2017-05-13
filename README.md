@@ -168,14 +168,15 @@ class App extends Component {
 ```
 
 Now we're going to add a method to the App component called createVisualization.
-inside that method we will create a new audio context with the Web Audio API. You do not need to download anything to have access to this API. Just create a new instance by typing new AudioContext(); and save it to a variable. So far our method looks like this
+inside that method we will create a new audio context with the Web Audio API. You do not need to download anything to have access to this API. An audio context represents an audio-processing graph, built from audio modules linked together, that are represented by AudioNodes. Just create a new instance by typing new AudioContext(); and save it to a variable. So far our method looks like this
 
 ```
 createVisualization(){
     let context = new AudioContext();
 }
 ```
-Now that we have the Audio context object saved to a variable we can create an analyser from it with the create analyser method.
+Now that we have the Audio context object saved to a variable we can create an analyser node from it with the create analyser method. According to [the MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) an analyser node "represents a node able to provide real-time frequency and time-domain analysis information. It is an AudioNode that passes the audio stream unchanged from the input to the output, but allows you to take the generated data, process it, and create audio visualizations." If that sounds confusing it's okay you will still be able to move forward with the tutorial.
+
 ```
 let analyser = context.createAnalyser();
 ```
@@ -191,7 +192,7 @@ let ctx = canvas.getContext('2d');
 let audio = this.refs.audio;
 audio.crossOrigin = "anonymous"
  ```
-After that we pass the audio tag into the Audio context object we instantiated.
+After that we pass the audio tag into the Audio context method to create an audio source that the audio context can work with. Then we connect it to the audio context's analyser and then both the analyser and the audio source are connected to the context's destination.
 
 ```
 let audioSrc = context.createMediaElementSource(audio);
@@ -199,3 +200,55 @@ audioSrc.connect(analyser);
 audioSrc.connect(context.destination);
 analyser.connect(context.destination);
 ```
+Just to check in this is what App.js should look like so far:  
+
+```
+import React, { Component } from 'react';
+import './App.css';
+
+class App extends Component {
+
+    createVisualization(){
+        let context = new AudioContext();
+        let analyser = context.createAnalyser();
+        let canvas = this.refs.analyserCanvas;
+        let ctx = canvas.getContext('2d');
+        let audio = this.refs.audio;
+        audio.crossOrigin = "anonymous";
+        let audioSrc = context.createMediaElementSource(audio);
+        audioSrc.connect(analyser);
+        audioSrc.connect(context.destination);
+        analyser.connect(context.destination);
+
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <h2>Sublime - 40oz to Freedom</h2>
+                <div id="mp3_player">
+                    <div id="audio_box">
+                        <audio
+                            ref="audio"
+                            autoPlay={true}
+                            controls={true}
+                            //this is the link to my song url feel free to use it or replace it with your own
+                            src={"https://p.scdn.co/mp3-preview/e4a8f30ca62b4d2a129cc4df76de66f43e12fa3f?cid=null"}
+                            >
+                            </audio>
+                        </div>
+                        <canvas
+                            ref="analyzerCanvas"
+                            id="analyzer"
+                            >
+                            </canvas>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        export default App;
+```
+
+Now we will create a function called renderFrame
