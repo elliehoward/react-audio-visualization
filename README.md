@@ -17,7 +17,7 @@ npm install -g create-react-app
 
 ### Okay now let's get started!
 
-Then we can create our app by typing this command followed by the name of your application. I called mine audio-visuals in this example. Type the following into your terminal:
+We can create our app by typing this command followed by the name of your application. I called mine audio-visuals in this example. Type the following into your terminal:
 
 
 ```
@@ -40,6 +40,7 @@ If you see an error that says atom is not a command then go to atom and look at 
 ![Atom menu example](http://i68.tinypic.com/avhjz7.png)
 
 
+ Now that you've opened up the directory with your text editor, take a look around! Don't worry about the node modules or anything else that looks confusing. We will walk through this step by step.  
 
 The file structure will look like this:  
 ![File structure example](http://i64.tinypic.com/keao0i.png)
@@ -105,7 +106,7 @@ Navigate to audio-visuals/src/App.js
  ```
 ### Now comes the real coding :)
 
-Now inside the main div we will insert an audio tag, with whatever song you'd like. I'm going to use sublime!
+Now inside the div with the className App we will insert an audio tag, with whatever song you'd like. I'm going to use sublime! Also add an h2 tag to say the name of the song and artist you choose.
 
 now the App Component should look like this:
 
@@ -114,6 +115,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+      <h2>Sublime - 40oz to Freedom</h2>
       <audio
           ref="audio"
           autoPlay={true}
@@ -127,14 +129,14 @@ class App extends Component {
 }
 ```
 
-As you can see we have set a few attributes on the audio tag, including the ref attribute. This is so we can reference the tag in a method we will write on our component later on. [Learn more about the red attribute here!](https://facebook.github.io/react/docs/refs-and-the-dom.html)
+As you can see we have set a few attributes on the audio tag, including the ref attribute. This is so we can reference the tag in a method we will write on our component later on. [Learn more about the ref attribute here!](https://facebook.github.io/react/docs/refs-and-the-dom.html)
 
-You can now run npm start in your terminal and see the audio tag. Mine looks like this:  
+You can now run ```npm start``` in your terminal and see the audio tag. Mine looks like this:  
 
 
 ![First website test](http://i67.tinypic.com/11t5sv8.png)  
 
-Go back to atom or your text editor and add a canvas tag underneath the audio tag. Add a ref attribute of "analyzerCanvas" and an id of "analyzer". I've also added a couple divs with specific Ids so we can reference them later and an h2 tag to say the name of the song and artist. Your app component should look like this now:
+Go back to atom or your text editor and add a canvas tag underneath the audio tag. Add a ref attribute of "analyzerCanvas" and an id of "analyzer". I've also added a couple divs with specific Ids so we can reference them later. Your app component should look like this now:
 
 ```
 class App extends Component {
@@ -170,6 +172,30 @@ inside that method we will create a new audio context with the Web Audio API. Yo
 
 ```
 createVisualization(){
-    var context = new AudioContext();
+    let context = new AudioContext();
 }
+```
+Now that we have the Audio context object saved to a variable we can create an analyser from it with the create analyser method.
+```
+let analyser = context.createAnalyser();
+```
+Then we create a reference to the canvas element and save it to a variable. We do this by accessing the refs object that React sets up for us by typing ```this.refs```. Then we want to get the context of the canvas so we can draw shapes on it. We do this with the methods that the canvas element has available for us to use.
+
+```
+let canvas = this.refs.analyserCanvas;
+let ctx = canvas.getContext('2d');
+```
+ Now we want to grab the audio tag in the same way we did the canvas. Then we set the cross origin of the audio tag to anonymous
+
+ ```
+let audio = this.refs.audio;
+audio.crossOrigin = "anonymous"
+ ```
+After that we pass the audio tag into the Audio context object we instantiated.
+
+```
+let audioSrc = context.createMediaElementSource(audio);
+audioSrc.connect(analyser);
+audioSrc.connect(context.destination);
+analyser.connect(context.destination);
 ```
