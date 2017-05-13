@@ -200,7 +200,7 @@ audioSrc.connect(analyser);
 audioSrc.connect(context.destination);
 analyser.connect(context.destination);
 ```
-####Just to check in this is what App.js should look like so far:  
+#### Just to check in this is what App.js should look like so far:  
 
 ```
 import React, { Component } from 'react';
@@ -274,7 +274,7 @@ renderFrame()
 
 Here we are using some methods from analyser nodes to collect frequency data from the music playing and repeatedly draw bars on the canvas. The bars height depend on the audio's frequency. I made my bars purple but feel free to change the value of ctx.fillStyle to whatever color you want.
 
-###Almost done!
+### Almost done!
 
 Now we need to make sure to invoke the createVisualization method after the app component loads. We will do this with a built in method called componentDidMount. This is called after the render function. Add this to your app component's methods.
 ```
