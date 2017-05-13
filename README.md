@@ -2,6 +2,8 @@
 
 This tutorial is for creating an audio visualization in React with the web audio API.
 
+### Let's get some stuff out of the way first,
+
 In this tutorial will use Node.js and npm, if you already have that installed then that's great move on to the next step, otherwise [learn about // get npm here.](https://www.npmjs.com/get-npm)
 
 This is *not* a tutorial on how to use React. If you want to learn more about how React works check out [Fullstack React](https://www.fullstackreact.com/)
@@ -12,6 +14,8 @@ Type the following into your terminal:
 ```
 npm install -g create-react-app
 ```
+
+### Okay now let's get started!
 
 Then we can create our app by typing this command followed by the name of your application. I called mine audio-visuals in this example. Type the following into your terminal:
 
@@ -99,6 +103,8 @@ Navigate to audio-visuals/src/App.js
 
  export default App;
  ```
+### Now comes the real coding :)
+
 Now inside the main div we will insert an audio tag, with whatever song you'd like. I'm going to use sublime!
 
 now the App Component should look like this:
