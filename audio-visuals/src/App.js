@@ -2,11 +2,20 @@ import React, { Component } from 'react';
 import './App.css';
 
 class App extends Component {
+    constructor(props){
+        super(props)
+
+        this.createVisualization = this.createVisualization.bind(this)
+    }
+
+    componentDidMount(){
+        this.createVisualization()
+    }
 
     createVisualization(){
         let context = new AudioContext();
         let analyser = context.createAnalyser();
-        let canvas = this.refs.analyserCanvas;
+        let canvas = this.refs.analyzerCanvas;
         let ctx = canvas.getContext('2d');
         let audio = this.refs.audio;
         audio.crossOrigin = "anonymous";
@@ -14,7 +23,6 @@ class App extends Component {
         audioSrc.connect(analyser);
         audioSrc.connect(context.destination);
         analyser.connect(context.destination);
-        renderFrame();
 
         function renderFrame(){
             let freqData = new Uint8Array(analyser.frequencyBinCount)
@@ -22,7 +30,7 @@ class App extends Component {
             analyser.getByteFrequencyData(freqData)
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             console.log(freqData)
-            ctx.fillStyle = '#00CCFF';
+            ctx.fillStyle = '#9933ff';
             let bars = 100;
             for (var i = 0; i < bars; i++) {
                 let bar_x = i * 3;

@@ -131,7 +131,7 @@ class App extends Component {
 
 As you can see we have set a few attributes on the audio tag, including the ref attribute. This is so we can reference the tag in a method we will write on our component later on. [Learn more about the ref attribute here!](https://facebook.github.io/react/docs/refs-and-the-dom.html)
 
-You can now run ```npm start``` in your terminal and see the audio tag. Mine looks like this:  
+You can now run ```npm start``` in your terminal and see the audio tag rendered on your webpage running on localhost:3000. Mine looks like this:  
 
 
 ![First website test](http://i67.tinypic.com/11t5sv8.png)  
@@ -168,7 +168,7 @@ class App extends Component {
 ```
 
 Now we're going to add a method to the App component called createVisualization.
-inside that method we will create a new audio context with the Web Audio API. You do not need to download anything to have access to this API. An audio context represents an audio-processing graph, built from audio modules linked together, that are represented by AudioNodes. Just create a new instance by typing new AudioContext(); and save it to a variable. So far our method looks like this
+inside that method we will create a new audio context with the Web Audio API. You do not need to download anything to have access to this API. An audio context represents an audio-processing graph, built from audio modules linked together, that are represented by AudioNodes. Just create a new instance by typing new AudioContext(); and save it to a variable. Later our audio context will be connected to our audio tag. So far our method looks like this
 
 ```
 createVisualization(){
@@ -192,7 +192,7 @@ let ctx = canvas.getContext('2d');
 let audio = this.refs.audio;
 audio.crossOrigin = "anonymous"
  ```
-After that we pass the audio tag into the Audio context method to create an audio source that the audio context can work with. Then we connect it to the audio context's analyser and then both the analyser and the audio source are connected to the context's destination.
+After that we pass the audio tag into the Audio context method called createMediaElementSource in order to create an audio source that the audio context can work with. Then we connect it to the audio context's analyser and then both the analyser and the audio source are connected to the context's destination.
 
 ```
 let audioSrc = context.createMediaElementSource(audio);
@@ -200,7 +200,7 @@ audioSrc.connect(analyser);
 audioSrc.connect(context.destination);
 analyser.connect(context.destination);
 ```
-Just to check in this is what App.js should look like so far:  
+####Just to check in this is what App.js should look like so far:  
 
 ```
 import React, { Component } from 'react';
@@ -251,4 +251,120 @@ class App extends Component {
         export default App;
 ```
 
-Now we will create a function called renderFrame
+Now we will create a  recursive function called renderFrame within our createVisualization method and then we will invoke it.
+
+```
+function renderFrame(){
+    let freqData = new Uint8Array(analyser.frequencyBinCount)
+    requestAnimationFrame(renderFrame)
+    analyser.getByteFrequencyData(freqData)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    console.log(freqData)
+    ctx.fillStyle = '#9933ff';
+    let bars = 100;
+    for (var i = 0; i < bars; i++) {
+        let bar_x = i * 3;
+        let bar_width = 2;
+        let bar_height = -(freqData[i] / 2);
+        ctx.fillRect(bar_x, canvas.height, bar_width, bar_height)
+    }
+};
+renderFrame()
+```
+
+Here we are using some methods from analyser nodes to collect frequency data from the music playing and repeatedly draw bars on the canvas. The bars height depend on the audio's frequency. I made my bars purple but feel free to change the value of ctx.fillStyle to whatever color you want.
+
+###Almost done!
+
+Now we need to make sure to invoke the createVisualization method after the app component loads. We will do this with a built in method called componentDidMount. This is called after the render function. Add this to your app component's methods.
+```
+componentDidMount(){
+    this.createVisualization()
+}
+```
+
+Now we just need to bind the context of this to the createVisualization method so that when we say ```this``` we mean the app component, not the createVisualization method. We will do this in the constructor function.
+
+```
+constructor(props){
+    super(props)
+
+    this.createVisualization = this.createVisualization.bind(this)
+}
+```
+
+### Congratulations you're done! Run npm start in your terminal to see it working on localhost:3000  and if you have problems check your code against mine:
+
+```
+import React, { Component } from 'react';
+import './App.css';
+
+class App extends Component {
+    constructor(props){
+        super(props)
+
+        this.createVisualization = this.createVisualization.bind(this)
+    }
+
+    componentDidMount(){
+        this.createVisualization()
+    }
+
+    createVisualization(){
+        let context = new AudioContext();
+        let analyser = context.createAnalyser();
+        let canvas = this.refs.analyzerCanvas;
+        let ctx = canvas.getContext('2d');
+        let audio = this.refs.audio;
+        audio.crossOrigin = "anonymous";
+        let audioSrc = context.createMediaElementSource(audio);
+        audioSrc.connect(analyser);
+        audioSrc.connect(context.destination);
+        analyser.connect(context.destination);
+
+        function renderFrame(){
+            let freqData = new Uint8Array(analyser.frequencyBinCount)
+            requestAnimationFrame(renderFrame)
+            analyser.getByteFrequencyData(freqData)
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            console.log(freqData)
+            ctx.fillStyle = '#9933ff';
+            let bars = 100;
+            for (var i = 0; i < bars; i++) {
+                let bar_x = i * 3;
+                let bar_width = 2;
+                let bar_height = -(freqData[i] / 2);
+                ctx.fillRect(bar_x, canvas.height, bar_width, bar_height)
+            }
+        };
+        renderFrame()
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <h2>Sublime - 40oz to Freedom</h2>
+                <div id="mp3_player">
+                    <div id="audio_box">
+                        <audio
+                            ref="audio"
+                            autoPlay={true}
+                            controls={true}
+                            //this is the link to my song url feel free to use it or replace it with your own
+                            src={"https://p.scdn.co/mp3-preview/e4a8f30ca62b4d2a129cc4df76de66f43e12fa3f?cid=null"}
+                            >
+                            </audio>
+                        </div>
+                        <canvas
+                            ref="analyzerCanvas"
+                            id="analyzer"
+                            >
+                            </canvas>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        export default App;
+```
