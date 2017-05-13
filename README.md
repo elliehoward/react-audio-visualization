@@ -2,6 +2,10 @@
 
 This tutorial is for creating an audio visualization in React with the web audio API.
 
+In this tutorial will use Node.js and npm, if you already have that installed then that's great move on to the next step, otherwise [learn about // get npm here.](https://www.npmjs.com/get-npm)
+
+This is *not* a tutorial on how to use React. If you want to learn more about how React works check out [Fullstack React](https://www.fullstackreact.com/)
+
 The first thing we need to do is download create-react-app to get our react boilerplate. [Here are the docs if you want to learn more.](https://github.com/facebookincubator/create-react-app)
 Type the following into your terminal:
 
@@ -124,7 +128,7 @@ You can now run npm start in your terminal and see the audio tag. Mine looks lik
 
 ![First website test](http://i67.tinypic.com/11t5sv8.png)  
 
-Go back to atom or your text editor and add a canvas tag underneath the audio tag. Add a ref attribute of "analyzerCanvas" and an id of "analyzer". I've also added a couple divs with specific Ids so we can reference them later. Your app component should look like this now:
+Go back to atom or your text editor and add a canvas tag underneath the audio tag. Add a ref attribute of "analyzerCanvas" and an id of "analyzer". I've also added a couple divs with specific Ids so we can reference them later and an h2 tag to say the name of the song and artist. Your app component should look like this now:
 
 ```
 class App extends Component {
@@ -138,18 +142,28 @@ class App extends Component {
                             ref="audio"
                             autoPlay={true}
                             controls={true}
+                            //this is the link to my song url feel free to use it or replace it with your own
                             src={"https://p.scdn.co/mp3-preview/e4a8f30ca62b4d2a129cc4df76de66f43e12fa3f?cid=null"}
                             >
                             </audio>
+                        </div>
                             <canvas
                                 ref="analyzerCanvas"
                                 id="analyzer"
                                 >
                                 </canvas>
-                        </div>
                     </div>
                 </div>
             );
         }
     }
+```
+
+Now we're going to add a method to the App component called createVisualization.
+inside that method we will create a new audio context with the Web Audio API. You do not need to download anything to have access to this API. Just create a new instance by typing new AudioContext(); and save it to a variable. So far our method looks like this
+
+```
+createVisualization(){
+    var context = new AudioContext();
+}
 ```
